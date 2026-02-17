@@ -1,3 +1,10 @@
 <Solution>
-  <Project Path="ContentManager.Admin.Api/ContentManager.Admin.Api.csproj" />
+  <Folder Name="/Api/">
+    <Project Path="ContentManager.Admin.Api/ContentManager.Admin.Api.csproj" />
+    <Project Path="ContentManager.Content.Api/ContentManager.Content.Api.csproj" Id="d538ffaf-3760-4df1-a40c-59da2e796849" />
+    <Project Path="ContentManager.Public.Api/ContentManager.Public.Api.csproj" Id="4fe93db1-1563-47fb-8d94-8f39ad3859a0" />
+  </Folder>
+  <Project Path="ContentManager.Application/ContentManager.Application.csproj" Id="b6fe2c2f-c4f0-441a-9892-b429428c0833" />
+  <Project Path="ContentManager.Domain/ContentManager.Domain.csproj" Id="449a1a98-216a-4f18-8727-2c2b8d0e8260" />
+  <Project Path="ContentManager.Infrastructure/ContentManager.Infrastructure.csproj" Id="f826eb00-3b1b-44e9-870c-a51d0be25565" />
 </Solution>
