@@ -1,10 +1,10 @@
 .vs/
-Api.ContentManager.Admin.Api/bin/
-Api.ContentManager.Admin.Api/obj/
-Api.ContentManager.Content.Api/bin/
-Api.ContentManager.Content.Api/obj/
-Api.ContentManager.Public.Api/bin/
-Api.ContentManager.Public.Api/obj/
+ContentManager.Admin.Api/bin/
+ContentManager.Admin.Api/obj/
+ContentManager.Content.Api/bin/
+ContentManager.Content.Api/obj/
+ContentManager.Public.Api/bin/
+ContentManager.Public.Api/obj/
 ContentManager.Application/bin/
 ContentManager.Application/obj/
 ContentManager.Domain/bin/
