@@ -1,6 +1,8 @@
-﻿using ContentManager.Domain.Entities;
+﻿using ContentManager.Application.Common.Interfaces;
+using ContentManager.Domain.Entities;
+using ContentManager.Domain.Enums;
+using ContentManager.Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
-using ContentManager.Application.Common.Interfaces;
 
 namespace ContentManager.Infrastructure.Persistence
 {
@@ -13,7 +15,37 @@ namespace ContentManager.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var configurationAssembly = typeof(UserConfigurations).Assembly;
+
+            modelBuilder.ApplyConfigurationsFromAssembly(configurationAssembly);
+
             base.OnModelCreating(modelBuilder);
+        }
+
+        public void Seed()
+        {
+            SeedBootstrapAdmin();
+        }
+
+        private void SeedBootstrapAdmin()
+        {
+            if (Users.Any(u => u.Username == "admin"))
+            {
+                return;
+            }
+
+            var adminUser = new User
+            {
+                Username = "admin",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                Email = "admin@random.com",
+                Role = UserRole.Admin,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            Users.Add(adminUser);
+
+            SaveChanges();
         }
     }
 }
