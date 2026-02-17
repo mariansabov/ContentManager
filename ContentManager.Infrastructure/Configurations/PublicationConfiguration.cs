@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ContentManager.Infrastructure.Configurations
 {
-    public class PublicationConfigurations : IEntityTypeConfiguration<Publication>
+    public class PublicationConfiguration : IEntityTypeConfiguration<Publication>
     {
         public void Configure(EntityTypeBuilder<Publication> builder)
         {

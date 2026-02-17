@@ -15,7 +15,7 @@ namespace ContentManager.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var configurationAssembly = typeof(UserConfigurations).Assembly;
+            var configurationAssembly = typeof(UserConfiguration).Assembly;
 
             modelBuilder.ApplyConfigurationsFromAssembly(configurationAssembly);
 

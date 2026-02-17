@@ -18,5 +18,25 @@
         "DebugTarget": "http"
       }
     ]
+  },
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "ContentManager.Admin.Api\\ContentManager.Admin.Api.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "ContentManager.Content.Api\\ContentManager.Content.Api.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "ContentManager.Public.Api\\ContentManager.Public.Api.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      }
+    ]
   }
 ]
