@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net10.0": {}
+    "net10.0": {
+      "ContentManager.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/ContentManager.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ContentManager.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "ContentManager.Domain/1.0.0": {
+      "type": "project",
+      "path": "../ContentManager.Domain/ContentManager.Domain.csproj",
+      "msbuildProject": "../ContentManager.Domain/ContentManager.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0": []
+    "net10.0": [
+      "ContentManager.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Yomu\\.nuget\\packages\\": {},
@@ -38,7 +57,11 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Yomu\\source\\repos\\ContentManager\\ContentManager.Domain\\ContentManager.Domain.csproj": {
+              "projectPath": "C:\\Users\\Yomu\\source\\repos\\ContentManager\\ContentManager.Domain\\ContentManager.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

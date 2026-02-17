@@ -36,6 +36,42 @@
             "related": ".pdb;.xml"
           }
         }
+      },
+      "ContentManager.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "ContentManager.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ContentManager.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ContentManager.Application.dll": {}
+        }
+      },
+      "ContentManager.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/ContentManager.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ContentManager.Domain.dll": {}
+        }
+      },
+      "ContentManager.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "ContentManager.Application": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ContentManager.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ContentManager.Infrastructure.dll": {}
+        }
       }
     }
   },
@@ -75,10 +111,28 @@
         "microsoft.openapi.2.0.0.nupkg.sha512",
         "microsoft.openapi.nuspec"
       ]
+    },
+    "ContentManager.Application/1.0.0": {
+      "type": "project",
+      "path": "../ContentManager.Application/ContentManager.Application.csproj",
+      "msbuildProject": "../ContentManager.Application/ContentManager.Application.csproj"
+    },
+    "ContentManager.Domain/1.0.0": {
+      "type": "project",
+      "path": "../ContentManager.Domain/ContentManager.Domain.csproj",
+      "msbuildProject": "../ContentManager.Domain/ContentManager.Domain.csproj"
+    },
+    "ContentManager.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../ContentManager.Infrastructure/ContentManager.Infrastructure.csproj",
+      "msbuildProject": "../ContentManager.Infrastructure/ContentManager.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "ContentManager.Application >= 1.0.0",
+      "ContentManager.Domain >= 1.0.0",
+      "ContentManager.Infrastructure >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 10.0.3"
     ]
   },
@@ -113,7 +167,17 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Yomu\\source\\repos\\ContentManager\\ContentManager.Application\\ContentManager.Application.csproj": {
+              "projectPath": "C:\\Users\\Yomu\\source\\repos\\ContentManager\\ContentManager.Application\\ContentManager.Application.csproj"
+            },
+            "C:\\Users\\Yomu\\source\\repos\\ContentManager\\ContentManager.Domain\\ContentManager.Domain.csproj": {
+              "projectPath": "C:\\Users\\Yomu\\source\\repos\\ContentManager\\ContentManager.Domain\\ContentManager.Domain.csproj"
+            },
+            "C:\\Users\\Yomu\\source\\repos\\ContentManager\\ContentManager.Infrastructure\\ContentManager.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\Yomu\\source\\repos\\ContentManager\\ContentManager.Infrastructure\\ContentManager.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
