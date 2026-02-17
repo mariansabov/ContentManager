@@ -1,0 +1,13 @@
+.vs/
+ContentManagement.PublicApi/bin/
+ContentManagement.PublicApi/obj/
+ContentManagement.ContentApi/bin/
+ContentManagement.ContentApi/obj/
+ContentManagement.AdminApi/bin/
+ContentManagement.AdminApi/obj/
+ContentManagement.Application/bin/
+ContentManagement.Application/obj/
+ContentManagement.Domain/bin/
+ContentManagement.Domain/obj/
+ContentManagement.Infrastructure/bin/
+ContentManagement.Infrastructure/obj/
