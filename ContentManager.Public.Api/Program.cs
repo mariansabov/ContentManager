@@ -1,3 +1,4 @@
+using ContentManager.Application.Features.Publications.Announcements;
 using ContentManager.Infrastructure.Extensions;
 using ContentManager.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,9 @@ namespace ContentManager.Public.Api
     {
         public static void Main(string[] args)
         {
-            var app = WebApplication.CreateBuilder(args).ConfigureServices().Build().ConfigureApp();
+            var assemblies = new[] { typeof(Program).Assembly, typeof(CreateAnnouncementCommand).Assembly };
+
+            var app = WebApplication.CreateBuilder(args).ConfigureServices(assemblies).Build().ConfigureApp();
 
             //using var scope = app.Services.CreateScope();
             //var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();

@@ -1,10 +1,15 @@
 ﻿using ContentManager.Application.Common.Interfaces;
+using ContentManager.Application.Features.Publications.Announcements;
 using ContentManager.Infrastructure.Options;
 using ContentManager.Infrastructure.Persistence;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
+using System.Reflection;
+using ContentManager.Application.Common.Behavior;
+using FluentValidation;
 
 namespace ContentManager.Infrastructure.Extensions
 {
@@ -12,10 +17,10 @@ namespace ContentManager.Infrastructure.Extensions
     {
         public static IServiceCollection ConfigureServices(
             this IServiceCollection services,
-            IConfiguration configuration
+            IConfiguration configuration,
+            Assembly[] assemblies 
         )
         {
-            
             services.AddControllers();
 
             services
@@ -25,9 +30,22 @@ namespace ContentManager.Infrastructure.Extensions
                 {
                     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ContentManager Api", Version = "v1" });
                 })
-                .AddDbContext(configuration);
+                .AddDbContext(configuration)
+                .AddMediatR(assemblies)
+                .AddAutoMapper(cfg => cfg.AddMaps(assemblies))
+                .AddValidatorsFromAssemblies(assemblies);
 
             return services;
+        }
+
+        public static IServiceCollection AddMediatR(
+            this IServiceCollection services,
+            Assembly[] assemblies
+        )
+        {
+            return services
+                .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies))
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
 
         public static IServiceCollection AddDbContext(
