@@ -34,6 +34,7 @@ namespace ContentManager.Infrastructure.Persistence
                 return;
             }
 
+            //TODO: Move the default admin credentials to configuration or environment variables for better security
             var adminUser = new User
             {
                 Username = "admin",
