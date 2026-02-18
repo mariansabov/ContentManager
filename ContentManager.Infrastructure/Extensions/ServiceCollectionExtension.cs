@@ -1,4 +1,5 @@
 ﻿using ContentManager.Application.Common.Interfaces;
+using ContentManager.Infrastructure.Options;
 using ContentManager.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,9 @@ namespace ContentManager.Infrastructure.Extensions
             IConfiguration configuration
         )
         {
+            services.Configure<AdminOptions>(
+                configuration.GetSection("Admin"));
+
             services.AddDbContext<DatabaseContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));

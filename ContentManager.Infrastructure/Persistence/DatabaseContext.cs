@@ -2,12 +2,16 @@
 using ContentManager.Domain.Entities;
 using ContentManager.Domain.Enums;
 using ContentManager.Infrastructure.Configurations;
+using ContentManager.Infrastructure.Options;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ContentManager.Infrastructure.Persistence
 {
-    public class DatabaseContext(DbContextOptions<DatabaseContext> options)
-        : DbContext(options), IApplicationDatabaseContext
+    public class DatabaseContext(
+        DbContextOptions<DatabaseContext> options,
+        IOptions<AdminOptions> adminOptions)
+            : DbContext(options), IApplicationDatabaseContext
     {
         public DbSet<User> Users { get; set; }
 
@@ -29,17 +33,16 @@ namespace ContentManager.Infrastructure.Persistence
 
         private void SeedBootstrapAdmin()
         {
-            if (Users.Any(u => u.Username == "admin"))
+            if (Users.Any(u => u.Username == adminOptions.Value.Username))
             {
                 return;
             }
 
-            //TODO: Move the default admin credentials to configuration or environment variables for better security
             var adminUser = new User
             {
-                Username = "admin",
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
-                Email = "admin@random.com",
+                Username = adminOptions.Value.Username,
+                PasswordHash = adminOptions.Value.PasswordHash,
+                Email = adminOptions.Value.Email,
                 Role = UserRole.Admin,
                 CreatedAt = DateTime.UtcNow
             };
