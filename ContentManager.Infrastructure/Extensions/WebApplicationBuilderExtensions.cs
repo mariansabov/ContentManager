@@ -9,14 +9,6 @@ namespace ContentManager.Infrastructure.Extensions
         {
             builder.Services.ConfigureServices(builder.Configuration, assemblies);
 
-            var now = DateTime.Now;
-
-            var hour = 7;
-
-            var notNow = now.AddHours(hour);
-
-            Console.WriteLine($"Current time: {now}; not now: {notNow}");
-
             Console.WriteLine("______________________________________________");
 
             return builder;
