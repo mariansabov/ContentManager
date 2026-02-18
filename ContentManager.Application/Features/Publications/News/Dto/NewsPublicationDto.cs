@@ -1,7 +1,9 @@
 ﻿using ContentManager.Domain.Enums;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-
-namespace ContentManager.Application.Features.Publications.Announcements.Dto
+namespace ContentManager.Application.Features.Publications.News.Dto
 {
     public record NewsPublicationDto
     {

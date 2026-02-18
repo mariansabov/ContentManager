@@ -1,6 +1,7 @@
 ﻿using ContentManager.Application.Common.Interfaces;
 using ContentManager.Domain.Entities;
 using ContentManager.Domain.Enums;
+using FluentValidation;
 using MediatR;
 
 namespace ContentManager.Application.Features.Publications.Announcements
@@ -10,6 +11,23 @@ namespace ContentManager.Application.Features.Publications.Announcements
         string Content,
         int HoursToLive,
         Guid AuthorId) : IRequest<Guid>;
+
+    public class CreateAnnouncementCommandValidator : AbstractValidator<CreateAnnouncementCommand>
+    {
+        public CreateAnnouncementCommandValidator()
+        {
+            RuleFor(x => x.Title)
+                .NotEmpty()
+                .MaximumLength(200);
+            RuleFor(x => x.Content)
+                .NotEmpty();
+            RuleFor(x => x.HoursToLive)
+                .GreaterThan(0)
+                .LessThanOrEqualTo(168); // Max 7 days
+            RuleFor(x => x.AuthorId)
+                .NotEmpty();
+        }
+    }
 
     public class CreateAnnouncementCommandHandler(IApplicationDatabaseContext context) : IRequestHandler<CreateAnnouncementCommand, Guid>
     {

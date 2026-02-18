@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using ContentManager.Application.Features.Publications.Announcements.Dto;
+using ContentManager.Application.Features.Publications.News.Dto;
 using ContentManager.Domain.Entities;
 
-namespace ContentManager.Application.Features.Publications.Announcements.Mappings
+namespace ContentManager.Application.Features.Publications.News.Mappings
 {
     public class NewsPublicationProfile : Profile
     {
