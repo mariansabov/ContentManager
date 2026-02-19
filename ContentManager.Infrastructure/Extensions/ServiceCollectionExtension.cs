@@ -1,15 +1,17 @@
-﻿using ContentManager.Application.Common.Interfaces;
-using ContentManager.Application.Features.Publications.Announcements;
+﻿using ContentManager.Application.Common.Behavior;
+using ContentManager.Application.Common.Interfaces;
 using ContentManager.Infrastructure.Options;
 using ContentManager.Infrastructure.Persistence;
+using ContentManager.Infrastructure.Services;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
 using System.Reflection;
-using ContentManager.Application.Common.Behavior;
-using FluentValidation;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ContentManager.Infrastructure.Extensions
 {
@@ -18,17 +20,28 @@ namespace ContentManager.Infrastructure.Extensions
         public static IServiceCollection ConfigureServices(
             this IServiceCollection services,
             IConfiguration configuration,
-            Assembly[] assemblies 
+            Assembly[] assemblies
         )
         {
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddJsonOptions(o =>
+                {
+                    o.JsonSerializerOptions.Converters.Add(
+                        new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+                    );
+                });
 
             services
+                .AddJwtAuthentication(configuration)
                 .AddHttpContextAccessor()
                 .AddEndpointsApiExplorer()
                 .AddSwaggerGen(c =>
                 {
-                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ContentManager Api", Version = "v1" });
+                    c.SwaggerDoc(
+                        "v1",
+                        new OpenApiInfo { Title = "ContentManager Api", Version = "v1" }
+                    );
                 })
                 .AddDbContext(configuration)
                 .AddMediatR(assemblies)
@@ -53,8 +66,7 @@ namespace ContentManager.Infrastructure.Extensions
             IConfiguration configuration
         )
         {
-            services.Configure<AdminOptions>(
-                configuration.GetSection("Admin"));
+            services.Configure<AdminOptions>(configuration.GetSection("Admin"));
 
             services.AddDbContext<DatabaseContext>(options =>
             {
@@ -64,6 +76,13 @@ namespace ContentManager.Infrastructure.Extensions
             services.AddScoped<IApplicationDatabaseContext>(provider =>
                 provider.GetRequiredService<DatabaseContext>()
             );
+
+            return services;
+        }
+
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             return services;
         }
