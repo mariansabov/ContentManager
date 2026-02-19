@@ -1,5 +1,6 @@
 ﻿using ContentManager.Application.Common.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContentManager.Application.Features.Publications.News
 {
@@ -9,7 +10,7 @@ namespace ContentManager.Application.Features.Publications.News
     {
         public async Task<Guid> Handle(DeleteNewsCommand request, CancellationToken cancellationToken)
         {
-            var news = await context.Publications.FindAsync([request.Id], cancellationToken);
+            var news = await context.Publications.SingleOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
 
             if (news is null)
             {

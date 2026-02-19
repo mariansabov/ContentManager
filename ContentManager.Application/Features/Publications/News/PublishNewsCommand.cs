@@ -31,6 +31,7 @@ namespace ContentManager.Application.Features.Publications.News
                     .Publications.Where(n => n.Id == request.Id)
                     .SingleOrDefaultAsync(cancellationToken)
                 ?? throw new KeyNotFoundException($"News with id {request.Id} not found.");
+
             news.Status = PublicationStatus.Published;
             news.PublishedAt = now;
             news.UpdatedAt = now;
