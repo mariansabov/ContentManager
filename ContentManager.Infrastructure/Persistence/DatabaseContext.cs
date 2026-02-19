@@ -3,6 +3,7 @@ using ContentManager.Domain.Entities;
 using ContentManager.Domain.Enums;
 using ContentManager.Infrastructure.Configurations;
 using ContentManager.Infrastructure.Options;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -41,11 +42,12 @@ namespace ContentManager.Infrastructure.Persistence
             var adminUser = new User
             {
                 Username = adminOptions.Value.Username,
-                PasswordHash = adminOptions.Value.PasswordHash,
                 Email = adminOptions.Value.Email,
                 Role = UserRole.Admin,
                 CreatedAt = DateTime.UtcNow
             };
+
+            adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, adminOptions.Value.Password);
 
             Users.Add(adminUser);
 
