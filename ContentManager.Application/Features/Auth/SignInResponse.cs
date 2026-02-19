@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ContentManager.Application.Features.Auth
+﻿namespace ContentManager.Application.Features.Auth
 {
-    internal class SignInResponse
-    {
-    }
+    public record SignInResponse(
+        string AccessToken);
 }

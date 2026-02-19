@@ -38,19 +38,26 @@ namespace ContentManager.Application.Features.Auth
             CancellationToken cancellationToken
         )
         {
-            var isExists = await context.Users
-                .AnyAsync(x => x.Email == request.Email, cancellationToken);
-
-            if (isExists)
+            var isEmailExists = await context.Users
+                .AnyAsync(u => u.Email == request.Email, cancellationToken);
+            if (isEmailExists)
             {
                 throw new Exception("Email already registered");
             }
+
+            var isUsernameExists = await context.Users
+                .AnyAsync(u => u.Username == request.Username, cancellationToken);
+            if (isUsernameExists)
+            {
+                throw new Exception("Username already registered");
+            } 
 
             var user = new User
             {
                 Id = Guid.NewGuid(),
                 Username = request.Username,
                 Email = request.Email,
+                CreatedAt = DateTime.UtcNow,
                 Role = UserRole.Author
             };
 
