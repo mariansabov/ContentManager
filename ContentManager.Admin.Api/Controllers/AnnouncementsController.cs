@@ -1,10 +1,12 @@
 ﻿using ContentManager.Application.Features.Publications.Announcements;
 using ContentManager.Application.Features.Publications.Announcements.Dto;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContentManager.Admin.Api.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class AnnouncementsController(IMediator mediator) : ControllerBase

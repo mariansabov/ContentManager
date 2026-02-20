@@ -15,6 +15,7 @@ namespace ContentManager.Infrastructure.Extensions
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

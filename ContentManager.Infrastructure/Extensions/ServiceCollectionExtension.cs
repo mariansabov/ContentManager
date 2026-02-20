@@ -138,6 +138,8 @@ namespace ContentManager.Infrastructure.Extensions
                     }
                 );
 
+            services.AddAuthorization();
+
             services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             return services;
