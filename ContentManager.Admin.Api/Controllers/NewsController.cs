@@ -1,6 +1,8 @@
 ﻿using ContentManager.Application.Features.Publications.News;
 using ContentManager.Application.Features.Publications.News.Dto;
+using ContentManager.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContentManager.Admin.Api.Controllers
@@ -30,20 +32,20 @@ namespace ContentManager.Admin.Api.Controllers
             return Ok(newsId);
         }
 
-        [HttpPatch]
-        public async Task<ActionResult<Guid>> PublishNews(Guid id, [FromBody] PublishNewsCommand command)
+        [Authorize(Roles = "Admin")]
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Guid>> PublishNews(
+            [FromRoute] Guid id,
+            [FromBody] PublishNewsCommand command
+        )
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
-            var newsId = await mediator.Send(command);
-                return newsId;
+            await mediator.Send(command with { Id = id });
+            return Ok();
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<Guid>> Delete(Guid id)
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Guid>> Delete([FromRoute] Guid id)
         {
             var newsId = await mediator.Send(new DeleteNewsCommand(id));
             return newsId;

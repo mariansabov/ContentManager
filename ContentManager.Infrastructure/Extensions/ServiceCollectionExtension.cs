@@ -1,17 +1,23 @@
 ﻿using ContentManager.Application.Common.Behavior;
 using ContentManager.Application.Common.Interfaces;
+using ContentManager.Domain.Entities;
 using ContentManager.Infrastructure.Options;
 using ContentManager.Infrastructure.Persistence;
 using ContentManager.Infrastructure.Services;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
 using System.Reflection;
+using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ContentManager.Infrastructure.Extensions
 {
@@ -82,6 +88,56 @@ namespace ContentManager.Infrastructure.Extensions
 
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+
+            services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+
+            services
+                .AddAuthentication("Bearer")
+                .AddJwtBearer(
+                    "Bearer",
+                    opt =>
+                    {
+                        var jwt = configuration.GetSection("Jwt").Get<JwtOptions>()!;
+                        opt.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = jwt.Issuer,
+
+                            ValidateAudience = true,
+                            ValidAudience = jwt.Audience,
+
+                            ValidateLifetime = true,
+                            
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(
+                                Encoding.UTF8.GetBytes(jwt.Key)
+                            ),
+                            NameClaimType = ClaimTypes.NameIdentifier,
+                            RoleClaimType = ClaimTypes.Role,
+                        };
+
+                        opt.Events = new JwtBearerEvents
+                        {
+                            OnMessageReceived = ctx =>
+                            {
+                                if (!string.IsNullOrEmpty(ctx.Token))
+                                {
+                                    return Task.CompletedTask;
+                                }
+
+                                var fromCookie = ctx.HttpContext.Request.Cookies["access_token"];
+                                if (!string.IsNullOrWhiteSpace(fromCookie))
+                                {
+                                    ctx.Token = fromCookie;
+                                }
+
+                                return Task.CompletedTask;
+                            },
+                        };
+                    }
+                );
+
             services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             return services;

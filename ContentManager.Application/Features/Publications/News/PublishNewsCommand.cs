@@ -28,9 +28,13 @@ namespace ContentManager.Application.Features.Publications.News
 
             var news =
                 await context
-                    .Publications.Where(n => n.Id == request.Id)
+                    .Publications.Where(n =>
+                        n.Id == request.Id && n.Status == PublicationStatus.Draft
+                    )
                     .SingleOrDefaultAsync(cancellationToken)
-                ?? throw new KeyNotFoundException($"News with id {request.Id} not found.");
+                ?? throw new KeyNotFoundException(
+                    $"News with id {request.Id} not found or this news already is published"
+                );
 
             news.Status = PublicationStatus.Published;
             news.PublishedAt = now;
