@@ -36,7 +36,7 @@ namespace ContentManager.Infrastructure.Persistence
 
         private void SeedBootstrapAdmin()
         {
-            if (Users.Any(u => u.Username == adminOptions.Value.Username))
+            if (Users.Any(u => u.Username == _adminOptions.Username))
             {
                 return;
             }
