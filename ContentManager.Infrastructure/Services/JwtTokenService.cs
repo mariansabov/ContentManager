@@ -1,7 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using ContentManager.Application.Common.Interfaces;
 using ContentManager.Domain.Entities;
-using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.Text;
 using ContentManager.Infrastructure.Options;

@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using ContentManager.Application.Common.Interfaces;
+﻿using ContentManager.Application.Common.Interfaces;
 using ContentManager.Application.Features.Auth;
 using ContentManager.Domain.Entities;
 using ContentManager.Infrastructure.Auth.Interfaces;
@@ -7,7 +6,6 @@ using ContentManager.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace ContentManager.Infrastructure.Services
 {
