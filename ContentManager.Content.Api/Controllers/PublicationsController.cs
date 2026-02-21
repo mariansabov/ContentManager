@@ -1,16 +1,13 @@
 ﻿using ContentManager.Application.Features.Publications.News;
 using ContentManager.Application.Features.Publications.News.Dto;
-using ContentManager.Domain.Enums;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ContentManager.Admin.Api.Controllers
+namespace ContentManager.Content.Api.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
-    public class NewsController(IMediator mediator) : ControllerBase
+    public class PublicationsController(IMediator mediator) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<List<NewsPublicationDto>>> GetAll()
@@ -31,16 +28,6 @@ namespace ContentManager.Admin.Api.Controllers
         {
             var newsId = await mediator.Send(command);
             return Ok(newsId);
-        }
-
-        [HttpPatch("{id}")]
-        public async Task<ActionResult<Guid>> PublishNews(
-            [FromRoute] Guid id,
-            [FromBody] PublishNewsCommand command
-        )
-        {
-            await mediator.Send(command with { Id = id });
-            return Ok();
         }
 
         [HttpDelete("{id}")]

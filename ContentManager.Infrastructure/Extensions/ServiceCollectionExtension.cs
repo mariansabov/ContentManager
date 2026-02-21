@@ -20,6 +20,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ContentManager.Infrastructure.Context;
 
 namespace ContentManager.Infrastructure.Extensions
 {
@@ -143,6 +144,8 @@ namespace ContentManager.Infrastructure.Extensions
             services.AddAuthorization();
 
             services.AddScoped<IAuthTokenWriter, CookieAuthTokenWriter>();
+
+            services.AddScoped<IUserContext, UserContext>();
 
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<IAuthService, AuthService>();

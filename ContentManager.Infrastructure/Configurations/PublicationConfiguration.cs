@@ -16,10 +16,6 @@ namespace ContentManager.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(200);
 
-            builder
-                .Property(n => n.Status)
-                .HasConversion(new EnumToStringConverter<PublicationStatus>());
-
             builder.HasOne(p => p.Author)
                 .WithMany(u => u.Publications)
                 .HasForeignKey(p => p.AuthorId)

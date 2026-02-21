@@ -13,7 +13,9 @@ namespace ContentManager.Infrastructure.Extensions
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+
+            //app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();

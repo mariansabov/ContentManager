@@ -11,8 +11,8 @@ namespace ContentManager.Infrastructure.Persistence
 {
     public class DatabaseContext(
         DbContextOptions<DatabaseContext> options,
-        IOptions<AdminOptions> adminOptions)
-            : DbContext(options), IApplicationDatabaseContext
+        IOptions<AdminOptions> adminOptions
+    ) : DbContext(options), IApplicationDatabaseContext
     {
         private readonly AdminOptions _adminOptions = adminOptions.Value;
 
@@ -46,13 +46,16 @@ namespace ContentManager.Infrastructure.Persistence
                 Username = _adminOptions.Username,
                 Email = _adminOptions.Email,
                 Role = UserRole.Admin,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
             };
 
-            adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, _adminOptions.Password);
+            adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(
+                adminUser,
+                _adminOptions.Password
+            );
 
             Users.Add(adminUser);
-            
+
             SaveChanges();
         }
     }

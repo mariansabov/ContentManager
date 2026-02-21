@@ -18,13 +18,15 @@ namespace ContentManager.Infrastructure.Services
         {
             var now = DateTime.UtcNow;
 
-            var claims = new[]
+            var claims = new List<Claim>()
             {
-                new Claim("userId", user.Id.ToString()),
-                new Claim("email", user.Email),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
+                new (JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new ("userId", user.Id.ToString()),
+                new ("email", user.Email),
+                new (ClaimTypes.Role, user.Role.ToString())
             };
-
+            
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_jwt.Key)
             );

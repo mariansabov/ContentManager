@@ -13,11 +13,11 @@ namespace ContentManager.Content.Api
 
             var app = WebApplication.CreateBuilder(args).ConfigureServices(assemblies).Build().ConfigureApp();
 
-            //using var scope = app.Services.CreateScope();
-            //var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+            using var scope = app.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-            //context.Database.Migrate();
-            //.Seed();
+            context.Database.Migrate();
+            //context.Seed();
 
             app.Run();
         }

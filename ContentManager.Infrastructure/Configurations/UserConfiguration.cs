@@ -13,12 +13,6 @@ namespace ContentManager.Infrastructure.Configurations
             builder.HasKey(u => u.Id);
 
             builder.HasIndex(u => u.Email).IsUnique();
-
-            builder.HasIndex(u => u.Username).IsUnique();
-
-            builder
-                .Property(u => u.Role)
-                .HasConversion(new EnumToStringConverter<UserRole>());
         }
     }
 }
