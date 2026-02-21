@@ -1,9 +1,6 @@
 ﻿using ContentManager.Application.Common.Interfaces;
-using ContentManager.Domain.Entities;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace ContentManager.Application.Features.Auth
 {
@@ -18,41 +15,18 @@ namespace ContentManager.Application.Features.Auth
         }
     }
 
-    public class SignInCommandHandler(
-        IApplicationDatabaseContext context,
-        IJwtTokenService jwt,
-        IPasswordHasher<User> passwordHasher
-    ) : IRequestHandler<SignInCommand, SignInResponse>
+    public class SignInCommandHandler(IAuthService authService)
+        : IRequestHandler<SignInCommand, SignInResponse>
     {
         public async Task<SignInResponse> Handle(
             SignInCommand request,
             CancellationToken cancellationToken
         )
         {
-            var user = await context.Users.FirstOrDefaultAsync(
-                u => u.Email == request.Email,
-                cancellationToken
-            );
+            var loginRequest = new LoginRequest(request.Email, request.Password);
+            var result = await authService.LoginAsync(loginRequest, cancellationToken);
 
-            if (user is null)
-            {
-                throw new Exception("Invalid credentials");
-            }
-
-            var verificationResult = passwordHasher.VerifyHashedPassword(
-                user,
-                user.PasswordHash,
-                request.Password
-            );
-
-            if (verificationResult == PasswordVerificationResult.Failed)
-            {
-                throw new Exception("Invalid credentials");
-            }
-
-            var token = jwt.Generate(user);
-
-            return new SignInResponse(token);
+            return new SignInResponse(result.AccessToken);
         }
     }
 }

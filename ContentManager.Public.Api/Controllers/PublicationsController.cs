@@ -15,8 +15,9 @@ namespace ContentManager.Public.Api.Controllers
             var news = await mediator.Send(new GetPublishedNewsQuery());
             return Ok(news);
         }
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<NewsPublicationDto>>> GetPublishedNewsById([FromRoute] Guid id)
+        public async Task<ActionResult<NewsPublicationDto>> GetPublishedNewsById([FromRoute] Guid id)
         {
             var news = await mediator.Send(new GetPublishedNewsByIdQuery(id));
             return Ok(news);

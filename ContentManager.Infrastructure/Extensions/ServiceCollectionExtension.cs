@@ -1,23 +1,25 @@
 ﻿using ContentManager.Application.Common.Behavior;
 using ContentManager.Application.Common.Interfaces;
 using ContentManager.Domain.Entities;
+using ContentManager.Infrastructure.Auth;
+using ContentManager.Infrastructure.Auth.Interfaces;
 using ContentManager.Infrastructure.Options;
 using ContentManager.Infrastructure.Persistence;
 using ContentManager.Infrastructure.Services;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ContentManager.Infrastructure.Extensions
 {
@@ -140,7 +142,10 @@ namespace ContentManager.Infrastructure.Extensions
 
             services.AddAuthorization();
 
+            services.AddScoped<IAuthTokenWriter, CookieAuthTokenWriter>();
+
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }

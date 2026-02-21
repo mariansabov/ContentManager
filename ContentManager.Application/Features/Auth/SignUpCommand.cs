@@ -12,7 +12,8 @@ namespace ContentManager.Application.Features.Auth
         string Username,
         string Email,
         string Password,
-        string PasswordConfirmation
+        string PasswordConfirmation,
+        UserRole Role
     ) : IRequest<string>;
 
     public class SignUpCommandValidator : AbstractValidator<SignUpCommand>
@@ -58,7 +59,7 @@ namespace ContentManager.Application.Features.Auth
                 Username = request.Username,
                 Email = request.Email,
                 CreatedAt = DateTime.UtcNow,
-                Role = UserRole.Author
+                Role = request.Role
             };
 
             user.PasswordHash = new PasswordHasher<User>().HashPassword(user, request.Password);
