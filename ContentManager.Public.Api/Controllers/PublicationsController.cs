@@ -12,15 +12,13 @@ namespace ContentManager.Public.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<NewsPublicationDto>>> GetPublishedNews()
         {
-            var news = await mediator.Send(new GetPublishedNewsQuery());
-            return Ok(news);
+            return await mediator.Send(new GetPublishedNewsQuery());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<NewsPublicationDto>> GetPublishedNewsById([FromRoute] Guid id)
         {
-            var news = await mediator.Send(new GetPublishedNewsByIdQuery(id));
-            return Ok(news);
+            return await mediator.Send(new GetPublishedNewsByIdQuery(id));
         }
     }
 }

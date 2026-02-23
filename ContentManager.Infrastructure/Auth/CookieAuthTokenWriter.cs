@@ -20,7 +20,7 @@ namespace ContentManager.Infrastructure.Auth
                     HttpOnly = true,
                     Secure = true, 
                     SameSite = SameSiteMode.Strict,
-                    Expires = DateTimeOffset.UtcNow.AddMinutes(_jwt.AccessTtlMinutes),
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(_jwt.AccessTtlMinutes)
                 }
             );
 

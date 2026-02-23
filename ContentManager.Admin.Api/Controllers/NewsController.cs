@@ -35,11 +35,10 @@ namespace ContentManager.Admin.Api.Controllers
 
         [HttpPatch("{id}")]
         public async Task<ActionResult> PublishNews(
-            [FromRoute] Guid id,
-            [FromBody] PublishNewsCommand command
+            [FromRoute] Guid id
         )
         {
-            await mediator.Send(command with { Id = id });
+            await mediator.Send(new PublishNewsCommand(id));
             return Ok();
         }
 

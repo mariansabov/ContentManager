@@ -31,7 +31,7 @@ namespace ContentManager.Application.Features.Users
         )
         {
             var user =
-                await dbContext.Users.FirstOrDefaultAsync(
+                await dbContext.Users.SingleOrDefaultAsync(
                     u => u.Id == request.Id,
                     cancellationToken
                 ) ?? throw new KeyNotFoundException($"Користувача з Id {request.Id} не знайдено.");
