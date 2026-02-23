@@ -1,21 +1,28 @@
-﻿using AutoMapper.QueryableExtensions;
-using ContentManager.Application.Features.Publications.News.Dto;
-using MediatR;
-using AutoMapper;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using ContentManager.Application.Common.Interfaces;
+using ContentManager.Application.Features.Publications.News.Dto;
 using ContentManager.Domain.Enums;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContentManager.Application.Features.Publications.News
 {
     public record GetPublishedNewsQuery : IRequest<List<NewsPublicationDto>>;
 
-    public class GetPublishedNewsQueryHandler(IApplicationDatabaseContext context, IMapper mapper) : IRequestHandler<GetPublishedNewsQuery, List<NewsPublicationDto>>
+    public class GetPublishedNewsQueryHandler(IApplicationDatabaseContext context, IMapper mapper)
+        : IRequestHandler<GetPublishedNewsQuery, List<NewsPublicationDto>>
     {
-        public async Task<List<NewsPublicationDto>> Handle(GetPublishedNewsQuery request, CancellationToken cancellationToken)
+        public async Task<List<NewsPublicationDto>> Handle(
+            GetPublishedNewsQuery request,
+            CancellationToken cancellationToken
+        )
         {
-            var newsEntities = await context.Publications
-                .Where(p => p.Type == PublicationType.News && p.Status == PublicationStatus.Published)
+            var newsEntities = await context
+                .Publications.AsNoTracking()
+                .Where(p =>
+                    p.Type == PublicationType.News && p.Status == PublicationStatus.Published
+                )
                 .OrderByDescending(p => p.CreatedAt)
                 .ProjectTo<NewsPublicationDto>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
