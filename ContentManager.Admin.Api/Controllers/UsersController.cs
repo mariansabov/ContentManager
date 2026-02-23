@@ -18,6 +18,13 @@ namespace ContentManager.Admin.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDto>> GetById([FromRoute] Guid id)
+        {
+            var result = await mediator.Send(new GetUserByIdQuery(id));
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
