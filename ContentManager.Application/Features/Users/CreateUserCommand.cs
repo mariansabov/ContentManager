@@ -6,9 +6,9 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace ContentManager.Application.Features.Auth
+namespace ContentManager.Application.Features.Users
 {
-    public record SignUpCommand(
+    public record CreateUserCommand(
         string Username,
         string Email,
         string Password,
@@ -16,9 +16,9 @@ namespace ContentManager.Application.Features.Auth
         UserRole Role
     ) : IRequest<string>;
 
-    public class SignUpCommandValidator : AbstractValidator<SignUpCommand>
+    public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {
-        public SignUpCommandValidator()
+        public CreateUserCommandValidator()
         {
             RuleFor(command => command.Username).NotEmpty().MinimumLength(5).MaximumLength(100);
             RuleFor(command => command.Email).NotEmpty().EmailAddress();
@@ -31,11 +31,11 @@ namespace ContentManager.Application.Features.Auth
         }
     }
 
-    public class SignUpCommandHandler(IApplicationDatabaseContext context, IJwtTokenService jwt)
-        : IRequestHandler<SignUpCommand, string>
+    public class CreateUserCommandHandler(IApplicationDatabaseContext context, IJwtTokenService jwt)
+        : IRequestHandler<CreateUserCommand, string>
     {
         public async Task<string> Handle(
-            SignUpCommand request,
+            CreateUserCommand request,
             CancellationToken cancellationToken
         )
         {
@@ -51,7 +51,7 @@ namespace ContentManager.Application.Features.Auth
             if (isUsernameExists)
             {
                 throw new Exception("Username already registered");
-            } 
+            }
 
             var user = new User
             {
