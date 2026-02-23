@@ -17,7 +17,6 @@ namespace ContentManager.Infrastructure.Context
 
             if (httpContext is null)
             {
-                //TODO: I think we need decided about that " logger.LogWarning("HttpContext is null");"
                 return;
             }
 
@@ -32,7 +31,6 @@ namespace ContentManager.Infrastructure.Context
             }
             else
             {
-                //TODO: We need decided about that " logger.LogWarning("UserId claim is missing or invalid.")";
                 Console.WriteLine($"No pars");
                 Id = Guid.Empty;
             }

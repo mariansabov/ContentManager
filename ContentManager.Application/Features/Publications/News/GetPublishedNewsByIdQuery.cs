@@ -31,7 +31,7 @@ namespace ContentManager.Application.Features.Publications.News
                 .FirstOrDefaultAsync(cancellationToken);
 
             return newsEntity
-                ?? throw new KeyNotFoundException($"Announcement with ID {request.Id} not found.");
+                ?? throw new KeyNotFoundException($"News with ID {request.Id} not found.");
         }
     }
 }

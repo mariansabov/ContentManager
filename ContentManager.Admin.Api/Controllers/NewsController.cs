@@ -34,7 +34,7 @@ namespace ContentManager.Admin.Api.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<Guid>> PublishNews(
+        public async Task<ActionResult> PublishNews(
             [FromRoute] Guid id,
             [FromBody] PublishNewsCommand command
         )

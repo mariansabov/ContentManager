@@ -5,29 +5,24 @@ using MediatR;
 
 namespace ContentManager.Application.Features.Publications.News
 {
-    public record CreateNewsCommand(
-        string Title,
-        string Content,
-        Guid AuthorId) : IRequest<Guid>;
+    public record CreateNewsCommand(string Title, string Content) : IRequest<Unit>;
 
     public class CreateNewsCommandValidator : AbstractValidator<CreateNewsCommand>
     {
         public CreateNewsCommandValidator()
         {
-            RuleFor(x => x.Title)
-                .NotEmpty()
-                .MaximumLength(200);
-            RuleFor(x => x.Content)
-                .NotEmpty();
-            RuleFor(x => x.AuthorId)
-                .NotEmpty();
+            RuleFor(x => x.Title).NotEmpty().MaximumLength(200);
+            RuleFor(x => x.Content).NotEmpty();
         }
     }
 
-    public class CreateNewsCommandHandler(IApplicationDatabaseContext context)
-        : IRequestHandler<CreateNewsCommand, Guid>
+    public class CreateNewsCommandHandler(IApplicationDatabaseContext dbContext, IUserContext userContext)
+        : IRequestHandler<CreateNewsCommand, Unit>
     {
-        public async Task<Guid> Handle(CreateNewsCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(
+            CreateNewsCommand request,
+            CancellationToken cancellationToken
+        )
         {
             var now = DateTime.UtcNow;
 
@@ -40,13 +35,13 @@ namespace ContentManager.Application.Features.Publications.News
                 Type = PublicationType.News,
                 CreatedAt = now,
                 UpdatedAt = now,
-                AuthorId = request.AuthorId
+                AuthorId = userContext.Id,
             };
 
-            await context.Publications.AddAsync(newsEntity, cancellationToken);
-            await context.SaveChangesAsync(cancellationToken);
+            await dbContext.Publications.AddAsync(newsEntity, cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
-            return newsEntity.Id;
+            return Unit.Value;
         }
     }
 }

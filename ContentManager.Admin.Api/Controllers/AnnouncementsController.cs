@@ -18,11 +18,38 @@ namespace ContentManager.Admin.Api.Controllers
             return Ok(announcements);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<AnnouncementPublicationDto>> GetById([FromRoute] Guid id)
+        {
+            var announcement = await mediator.Send(new GetAnnouncementByIdQuery(id));
+            return Ok(announcement);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Guid>> Create([FromBody] CreateAnnouncementCommand command)
         {
             var announcementId = await mediator.Send(command);
             return Ok(announcementId);
+        }
+
+        [HttpPatch]
+        [Route("{id}")]
+        public async Task<ActionResult> Update(
+            [FromRoute] Guid id,
+            [FromBody] UpdateAnnouncementCommand command
+        )
+        {
+            await mediator.Send(command with { Id = id });
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult> Delete([FromRoute] Guid id)
+        {
+            await mediator.Send(new DeleteAnnouncementCommand(id));
+            return NoContent();
         }
     }
 }

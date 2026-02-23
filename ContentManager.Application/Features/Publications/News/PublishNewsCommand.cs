@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContentManager.Application.Features.Publications.News
 {
-    public record PublishNewsCommand(Guid Id) : IRequest<Guid>;
+    public record PublishNewsCommand(Guid Id) : IRequest<Unit>;
 
     public class PublishNewsCommandValidator : AbstractValidator<PublishNewsCommand>
     {
@@ -17,9 +17,9 @@ namespace ContentManager.Application.Features.Publications.News
     }
 
     public class PublishNewsCommandHandler(IApplicationDatabaseContext context)
-        : IRequestHandler<PublishNewsCommand, Guid>
+        : IRequestHandler<PublishNewsCommand, Unit>
     {
-        public async Task<Guid> Handle(
+        public async Task<Unit> Handle(
             PublishNewsCommand request,
             CancellationToken cancellationToken
         )
@@ -42,7 +42,7 @@ namespace ContentManager.Application.Features.Publications.News
 
             await context.SaveChangesAsync(cancellationToken);
 
-            return request.Id;
+            return Unit.Value;
         }
     }
 }

@@ -6,32 +6,30 @@ using MediatR;
 
 namespace ContentManager.Application.Features.Publications.Announcements
 {
-    public record CreateAnnouncementCommand(
-        string Title,
-        string Content,
-        int HoursToLive,
-        Guid AuthorId) : IRequest<Guid>;
+    public record CreateAnnouncementCommand(string Title, string Content, int HoursToLive)
+        : IRequest<Guid>;
 
     public class CreateAnnouncementCommandValidator : AbstractValidator<CreateAnnouncementCommand>
     {
         public CreateAnnouncementCommandValidator()
         {
-            RuleFor(x => x.Title)
-                .NotEmpty()
-                .MaximumLength(200);
-            RuleFor(x => x.Content)
-                .NotEmpty();
-            RuleFor(x => x.HoursToLive)
-                .GreaterThan(0)
-                .LessThanOrEqualTo(168); // Max 7 days
-            RuleFor(x => x.AuthorId)
-                .NotEmpty();
+            RuleFor(x => x.Title).NotEmpty().MaximumLength(200);
+
+            RuleFor(x => x.Content).NotEmpty();
+
+            RuleFor(x => x.HoursToLive).GreaterThan(0).LessThanOrEqualTo(168); // Max 7 days
         }
     }
 
-    public class CreateAnnouncementCommandHandler(IApplicationDatabaseContext context) : IRequestHandler<CreateAnnouncementCommand, Guid>
+    public class CreateAnnouncementCommandHandler(
+        IApplicationDatabaseContext dbContext,
+        IUserContext userContext
+    ) : IRequestHandler<CreateAnnouncementCommand, Guid>
     {
-        public async Task<Guid> Handle(CreateAnnouncementCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(
+            CreateAnnouncementCommand request,
+            CancellationToken cancellationToken
+        )
         {
             var now = DateTime.UtcNow;
 
@@ -45,11 +43,11 @@ namespace ContentManager.Application.Features.Publications.Announcements
                 CreatedAt = now,
                 UpdatedAt = now,
                 ExpiresAt = now.AddHours(request.HoursToLive),
-                AuthorId = request.AuthorId
+                AuthorId = userContext.Id,
             };
 
-            await context.Publications.AddAsync(announcementEntity, cancellationToken);
-            await context.SaveChangesAsync(cancellationToken);
+            await dbContext.Publications.AddAsync(announcementEntity, cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
             return announcementEntity.Id;
         }

@@ -21,9 +21,8 @@ namespace ContentManager.Application.Features.Publications.Announcements
             var now = DateTime.UtcNow;
 
             var announcements = await context
-                .Publications.Where(p =>
-                    p.ExpiresAt > now && p.Type == PublicationType.Announcement
-                )
+                .Publications.AsNoTracking()
+                .Where(p => p.ExpiresAt > now && p.Type == PublicationType.Announcement)
                 .ProjectTo<AnnouncementPublicationDto>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
