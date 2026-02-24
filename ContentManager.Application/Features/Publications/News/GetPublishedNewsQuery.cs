@@ -22,8 +22,8 @@ namespace ContentManager.Application.Features.Publications.News
                 .Publications.AsNoTracking()
                 .Where(publication => publication.Status == PublicationStatus.Published
                 )
-                .ProjectTo<NewsPublicationDto>(mapper.ConfigurationProvider)
                 .OrderByDescending(p => p.CreatedAt)
+                .ProjectTo<NewsPublicationDto>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
             return newsEntities;

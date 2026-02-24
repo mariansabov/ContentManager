@@ -1,5 +1,4 @@
-﻿using ContentManager.Domain.Entities;
-using ContentManager.Domain.Enums;
+﻿using ContentManager.Domain.Enums;
 
 namespace ContentManager.Application.Features.Users.Dto
 {

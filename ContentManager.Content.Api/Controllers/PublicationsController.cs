@@ -1,5 +1,6 @@
 ﻿using ContentManager.Application.Features.Publications.News;
 using ContentManager.Application.Features.Publications.News.Dto;
+using ContentManager.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

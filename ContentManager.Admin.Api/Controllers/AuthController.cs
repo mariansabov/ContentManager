@@ -12,7 +12,6 @@ namespace ContentManager.Admin.Api.Controllers
         public async Task<IActionResult> Login([FromBody] SignInCommand command)
         {
             var userToken = await mediator.Send(command);
-
             return Ok(userToken);
         }
     }

@@ -6,6 +6,8 @@ namespace ContentManager.Application.Features.Auth
 {
     public record SignInCommand(string Email, string Password) : IRequest<SignInResponse>;
 
+    public record SignInResponse(string AccessToken);
+
     public class SignInCommandValidator : AbstractValidator<SignInCommand>
     {
         public SignInCommandValidator()
